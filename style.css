@@ -1,3 +1,22 @@
 #map { 
     height: 900px; 
 }
+.leaflet-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.geocoder-control-input {
+    border-radius: 10px;
+    outline: none;
+    background-color: rgb(255, 255, 255);
+    height: 22px;
+    padding-left: 10px;
+}
+
+.geocoder-control-suggestions {
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 10px 25px;
+}
