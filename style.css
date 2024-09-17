@@ -1,12 +1,14 @@
 #map { 
     height: 900px; 
 }
+
 .leaflet-top {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 20px;
 }
+
 .geocoder-control-input {
     border-radius: 10px;
     outline: none;
@@ -19,4 +21,64 @@
     background-color: rgb(255, 255, 255);
     cursor: pointer;
     padding: 10px 25px;
+}
+
+/* menú hamburguesa */
+.menu-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* menú desplegable */
+#controls {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 200px;
+    background-color: #f4f4f4;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+    z-index: 999;
+}
+
+#controls.visible {
+    transform: scaleY(1);
+}
+
+#controls h2 {
+    margin-top: 0;
+}
+
+#event-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+label:hover {
+    background-color: #e1e1e1;
+    border-radius: 5px;
 }
