@@ -1,5 +1,16 @@
-#map { 
-    height: 900px; 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+header h1 {
+    text-align: center;
+}
+
+.mapa { 
+    height: 820px; 
 }
 
 .leaflet-top {
@@ -32,14 +43,14 @@
     cursor: pointer;
     z-index: 1000;
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 5px;
 }
 
 /* menú desplegable */
 #controls {
     position: absolute;
-    top: 60px;
+    top: 90px;
     right: 20px;
     width: 200px;
     background-color: #f4f4f4;
@@ -60,6 +71,7 @@
 
 #controls h2 {
     margin-top: 0;
+    text-align: center;
 }
 
 #event-filter {
