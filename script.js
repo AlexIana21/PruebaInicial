@@ -394,4 +394,37 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input[name="event"]').forEach(checkbox => {
         checkbox.addEventListener('change', displayFilteredEvents);
     });
+
+    // capas 
+    // Definir 
+    let openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    let esriSat = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    });
+
+    let cartoDBDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+    });
+
+    // capa base  por defecto
+    openStreetMap.addTo(map);
+
+    //  marcadores (capa superpuesta)
+    let markers = L.layerGroup();
+
+    // Añadir los marcadores al mapa
+    markers.addTo(map);
+
+    //  control de capas
+    let baseMaps = {
+        "OpenStreetMap": openStreetMap,
+        "Esri Satélite": esriSat,
+        "CartoDB Dark": cartoDBDark
+    };
+
+    // Añadir el control 
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
 });
