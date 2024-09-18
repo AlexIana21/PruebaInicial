@@ -94,6 +94,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    
+    async function getSeaLakeIce() {
+        try {
+            const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=seaLakeIce');
+            const data = await response.json();
+
+            console.log('Respuesta completa de la API:', data);
+
+            if (data.events && data.events.length > 0) {
+                displaySeaLakeIce(data.events); // Corrección aquí
+            } else {
+                console.warn('No se encontraron eventos de hielo en lagos y mares activos en la respuesta.');
+            }
+
+        } catch (error) {
+            console.error('Error fetching sea/lake ice events:', error);
+        }
+    }
 
 
     // Mostrar los incendios
@@ -256,6 +274,38 @@ document.addEventListener('DOMContentLoaded', function () {
             map.invalidateSize();
         }
 
+     // Mostrar los icebergs
+
+     function displaySeaLakeIce(events) {
+        events.forEach(event => {
+            if (event.geometry && event.geometry.length > 0) {
+                const geometry = event.geometry[0];
+                const coordinates = geometry.coordinates;
+
+                if (geometry.type === 'Point' && coordinates.length === 2) {
+                    const lat = coordinates[1]; 
+                    const lng = coordinates[0];
+
+                    if (lat && lng) {
+                        let marker = L.marker([lat, lng], { 
+                            icon: getEventIcon('SeaLakeIce')
+                        }).addTo(map);
+
+                        marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                    }  else {
+                        console.warn('Coordenadas inválidas para el evento:', event.title); //
+                    }
+                }else {
+                    console.warn(`El evento ${event.title} no tiene una geometría de tipo Point con coordenadas válidas.`); //
+                }
+            } else {
+                console.warn(`El evento ${event.title} no tiene geometrías disponibles.`); //
+            }
+        });
+
+        map.invalidateSize();
+    }
+
     // icono para el evento
     function getEventIcon(eventType) {
         switch (eventType) {
@@ -292,7 +342,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 iconAnchor: [22, 38], 
                 popupAnchor: [-3, -38] 
             });
-            
+
+            case 'SeaLakeIce': 
+            return L.icon({
+                iconUrl: './img/seaLakeIce.png', 
+                iconSize: [30, 30], 
+                iconAnchor: [22, 38], 
+                popupAnchor: [-3, -38] 
+            });
             default:
                 return L.icon({
                     iconUrl: '', 
@@ -326,6 +383,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             else if (eventType === 'SevereStorms') {
                 getSevereStorms();
+            }
+            else if (eventType === 'SeaLakeIce') {
+                getSeaLakeIce();
             }
         });
     }
