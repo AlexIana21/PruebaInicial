@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Inicializar el mapa
-    let map = L.map('map').setView([51.505, -0.09], 13);
+    let map = L.map('map').setView([20, 0], 2); 
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -21,120 +21,109 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Inicializar la barra de búsqueda de Esri solo una vez
-    if (!L.esri.Controls.GeosearchAdded) {
-        let searchControl = new L.esri.Controls.Geosearch().addTo(map);
-        let results = new L.LayerGroup().addTo(map);
+    // Obtener eventos de la API EONET y filtrarlos
+    async function getWildfires() {
+        try {
+            const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=wildfires');
+            const data = await response.json();
 
-        searchControl.on('results', function (data) {
-            results.clearLayers();
-            for (let i = data.results.length - 1; i >= 0; i--) {
-                results.addLayer(L.marker(data.results[i].latlng));
+            console.log('Respuesta completa de la API:', data);
+
+            if (data.events && data.events.length > 0) {
+                displayWildfires(data.events);
+            } else {
+                console.warn('No se encontraron incendios activos en la respuesta.');
+            }
+
+        } catch (error) {
+            console.error('Error fetching wildfires:', error);
+        }
+    }
+
+    // Mostrar los incendios
+    function displayWildfires(events) {
+        events.forEach(event => {
+        
+            console.log('Detalles del evento:', event);
+
+            // el evento tiene geometrías y al menos una coordenada
+            if (event.geometry && event.geometry.length > 0) {
+                console.log(`Evento ${event.title} tiene geometrías:`, event.geometry);
+
+                const geometry = event.geometry[0]; // primera geometría
+                const coordinates = geometry.coordinates; // Coordenadas del evento
+
+                // Verificar si (array con dos elementos)
+                if (geometry.type === 'Point' && coordinates.length === 2) {
+                    const lat = coordinates[1]; 
+                    const lng = coordinates[0]; 
+
+                    // Crear el marcador solo si las coordenadas son válidas
+                    if (lat && lng) {
+                        let marker = L.marker([lat, lng], { 
+                            icon: getEventIcon('Wildfires')
+                        }).addTo(map);
+
+                        marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                    } else {
+                        console.warn('Coordenadas inválidas para el evento:', event.title);
+                    }
+                } else {
+                    console.warn(`El evento ${event.title} no tiene una geometría de tipo Point con coordenadas válidas.`);
+                }
+            } else {
+                console.warn(`El evento ${event.title} no tiene geometrías disponibles.`);
             }
         });
 
-        L.esri.Controls.GeosearchAdded = true;
+        // Refrescar el mapa
+        map.invalidateSize();
     }
 
-    // cambios en los checkboxes
+    // icono para el evento
+    function getEventIcon(eventType) {
+        switch (eventType) {
+            case 'Wildfires':
+              
+                return L.icon({
+                    iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-red.png', 
+                    iconSize: [38, 38], 
+                    iconAnchor: [22, 38], 
+                    popupAnchor: [-3, -38] 
+                });
+            default:
+                return L.icon({
+                    iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png', 
+                    iconSize: [38, 38],
+                    iconAnchor: [22, 38],
+                    popupAnchor: [-3, -38]
+                });
+        }
+    }
+
+    // Obtener los incendios cuando se cargue la página
+    getWildfires();
+
+    // Filtrar eventos por el tipo seleccionado
+    function displayFilteredEvents() {
+        // Borrar todos los eventos del mapa
+        map.eachLayer((layer) => {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Obtener el valor del filtro y actualizar el mapa
+        document.querySelectorAll('input[name="event"]:checked').forEach(checkbox => {
+            const eventType = checkbox.value;
+            if (eventType === 'Wildfires') {
+                getWildfires();
+            }
+        });
+    }
+
+    // cambio en los checkboxes
     document.querySelectorAll('input[name="event"]').forEach(checkbox => {
         checkbox.addEventListener('change', displayFilteredEvents);
     });
-
-    //  almacenar los marcadores de eventos
-    let eventMarkers = [];
-
-    /* Intento de cocina fallido :(
-    
-    // Función para mostrar eventos filtrados
-    function displayFilteredEvents() {
-        const selectedEventTypes = Array.from(document.querySelectorAll('input[name="event"]:checked')).map(cb => cb.value);
-
-        eventMarkers.forEach(marker => map.removeLayer(marker));
-        eventMarkers = [];
-
-        fetch('https://eonet.gsfc.nasa.gov/api/v3/events')
-            .then(response => response.json())
-            .then(data => {
-                const events = data.events;
-                const noGeometriesList = document.getElementById('no-geometries-list');
-                const noGeometriesContainer = document.getElementById('no-geometries');
-                
-                // Verifica si noGeometriesList existe
-                if (!noGeometriesList) {
-                    console.error("El elemento no-geometries-list no existe.");
-                    return;
-                }
-
-                // Limpiar la lista de eventos sin geometrías
-                noGeometriesList.innerHTML = '';
-
-                let eventsWithoutGeometries = 0;
-
-                events.forEach(event => {
-                    const eventType = event.categories[0]?.title || 'Desconocido';
-
-                    if (event.geometries && event.geometries.length > 0) {
-                        const coordinates = event.geometries[0]?.coordinates;
-
-                        if (coordinates && coordinates.length === 2) {
-                            const lat = coordinates[1];
-                            const lng = coordinates[0];
-
-                            const marker = L.marker([lat, lng], { icon: getEventIcon(eventType) }).addTo(map);
-
-                            marker.bindPopup(`
-                                <strong>${event.title}</strong><br>
-                                Tipo: ${eventType}<br>
-                                Fecha: ${new Date(event.geometries[0].date).toLocaleDateString()}<br>
-                                <a href="${event.link}" target="_blank">Más información</a>
-                            `);
-                        } else {
-                            console.warn(`El evento "${event.title}" no tiene coordenadas válidas.`);
-                        }
-                    } else {
-                        const li = document.createElement('li');
-                        li.textContent = event.title;
-                        noGeometriesList.appendChild(li);
-                        eventsWithoutGeometries++;
-                    }
-                });
-
-                if (eventsWithoutGeometries > 0) {
-                    noGeometriesContainer.style.display = 'block';
-                } else {
-                    noGeometriesContainer.style.display = 'none';
-                }
-            })
-            .catch(error => console.error('Error al obtener los datos de EONET:', error));
-    }
-     */
-
-    // obtener el icono 
-    function getEventIcon(eventType) {
-        let iconHtml = '';
-
-        switch (eventType) {
-            case 'Wildfires':
-                iconHtml = '🔥';
-                break;
-            case 'Severe Storms':
-            case 'Storms':
-                iconHtml = '🌩️';
-                break;
-            case 'Earthquakes':
-                iconHtml = '🌍';
-                break;
-            default:
-                iconHtml = '❓';
-        }
-
-        return L.divIcon({
-            className: 'custom-icon',
-            html: `<span style="font-size: 24px;">${iconHtml}</span>`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-    }
 });
