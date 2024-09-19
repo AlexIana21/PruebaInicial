@@ -396,15 +396,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // capas 
-
+    // Definir 
     
-    // Definir
     let openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; OpenStreetMap contributors'
     });
-
-    let esriSat = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    
+    
+    let esriSat =  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenTopoMap contributors'
     });
 
     let cartoDBDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
@@ -422,9 +422,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //  control de capas
     let baseMaps = {
-        "OpenStreetMap": openStreetMap,
-        "Esri Satélite": esriSat,
-        "CartoDB Dark": cartoDBDark
+        "Mapa": openStreetMap,
+        "Topógrafico": esriSat,
+        "Oscuro": cartoDBDark
     };
 
     // definir overlayMaps como un objeto vacío

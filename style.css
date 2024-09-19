@@ -9,9 +9,7 @@ header h1 {
     text-align: center;
 }
 
-.mapa { 
-    height: 820px; 
-}
+
 
 .leaflet-top {
     display: flex;
