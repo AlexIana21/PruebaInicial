@@ -425,6 +425,9 @@ document.addEventListener('DOMContentLoaded', function () {
         "CartoDB Dark": cartoDBDark
     };
 
+    // definir overlayMaps como un objeto vacío
+    let overlayMaps = {}; 
+
     // Añadir el control 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
 });
