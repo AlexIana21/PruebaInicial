@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'SeaLakeIce': 
             return L.icon({
                 iconUrl: './img/seaLakeIce.png', 
-                iconSize: [30, 30], 
+                iconSize: [22, 22], 
                 iconAnchor: [22, 38], 
                 popupAnchor: [-3, -38] 
             });
