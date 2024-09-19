@@ -7,14 +7,6 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-        <script src="https://unpkg.com/esri-leaflet@3.0.4/dist/esri-leaflet.js"></script>
-        <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script>
-        <!-- OpenStreetMap-->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-        <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     </head>
 <body>
 
@@ -23,14 +15,14 @@
             <h1>Eventos atmosféricos</h1>
         </header>
 
-        <div id="map" class="mapa"></div>
+        <div id="map" class="mapa" style="height: 100vh;"></div>
 
         <div id="menu-toggle" class="menu-icon">
             &#9776;
         </div>
 
-          <!-- Menu derecho  -->
-          <div id="controls" class="hidden">
+        <!-- Menú lateral para eventos (sin cambios) -->
+        <div id="controls" class="hidden">
             <h2>Eventos</h2>
             <form id="event-filter">
                 <label>
@@ -49,7 +41,7 @@
         </div>
     </div>
 
+    <script src="script.js"></script>
 
-    <script src="./script.js"></script>
 </body>
 </html>
