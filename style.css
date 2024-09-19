@@ -3,6 +3,7 @@
 body {
     margin: 0;
     font-family: "Roboto", sans-serif;
+    box-sizing: border-box;
 }
 
 header h1 {
@@ -37,7 +38,7 @@ header h1 {
 /* menú hamburguesa */
 .menu-icon {
     position: absolute;
-    top: 15px;
+    top: 40px;
     right: 20px;
     font-size: 30px;
     cursor: pointer;
@@ -50,8 +51,8 @@ header h1 {
 /* menú desplegable */
 #controls {
     position: absolute;
-    top: 90px;
-    right: 20px;
+    top: 130px;
+    right: 75px;
     width: 200px;
     background-color: #f4f4f4;
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
@@ -70,8 +71,10 @@ header h1 {
 }
 
 #controls h2 {
-    margin-top: 0;
+    margin: 0;
+    padding: 8px 0px;
     text-align: center;
+    align-items: center;
 }
 
 #event-filter {
@@ -80,17 +83,41 @@ header h1 {
     gap: 10px;
 }
 
-label {
+/* filtrar por fechas */
+.date-filter {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.date-filter .end {
+    padding-left: 30px;
+}
+.event-type {
     font-size: 14px;
     cursor: pointer;
     padding: 5px;
+}
+
+.btn-buscar {
+    margin-left: 40px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 25px;
+    font-weight: 700;
+    background-color: #7acbeb;
+    cursor: pointer;
+}
+
+.btn-buscar:hover {
+    color: rgb(78, 78, 78);
 }
 
 input[type="checkbox"] {
     margin-right: 5px;
 }
 
-label:hover {
+.event-type:hover {
     background-color: #e1e1e1;
     border-radius: 5px;
 }

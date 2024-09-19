@@ -8,40 +8,49 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     </head>
-<body>
+    <body>
 
-    <div class="container">
-        <header>
-            <h1>Eventos atmosféricos</h1>
-        </header>
-
-        <div id="map" class="mapa" style="height: 100vh;"></div>
-
-        <div id="menu-toggle" class="menu-icon">
-            &#9776;
+        <div class="container">
+            <header>
+                <h1>Eventos atmosféricos</h1>
+            </header>
+    
+            <section class="date-filter">
+                <label for="start" class="start">Fecha de inicio</label>
+                <input id="start" type="date">
+                <label for="end" class="end">Fecha de fin</label>
+                <input id="end" type="date">
+                <input type="submit" value="Buscar" id="btnBuscar" class="btn-buscar">
+            </section>
+           
+            <div id="map" class="mapa"></div>
+    
+            <div id="menu-toggle" class="menu-icon">
+                &#9776;
+            </div>
+    
+              <!-- Menu derecho  -->
+              <div id="controls" class="hidden">
+                <h2>Eventos</h2>
+                <form id="event-filter">
+                    <label class="event-type">
+                        <input type="checkbox" name="event" value="Wildfires"> Incendios
+                    </label>
+                    <label class="event-type">
+                        <input type="checkbox" name="event" value="SeaLakeIce"> Oceanos y lagos helados
+                    </label>
+                    <label class="event-type">
+                        <input type="checkbox" name="event" value="Volcanoes"> Volcanes
+                    </label>
+                    <label class="event-type">
+                        <input type="checkbox" name="event" value="SevereStorms"> Tormentas Severas
+                    </label>
+                </form>
+            </div>
         </div>
-
-        <!-- Menú lateral para eventos (sin cambios) -->
-        <div id="controls" class="hidden">
-            <h2>Eventos</h2>
-            <form id="event-filter">
-                <label>
-                    <input type="checkbox" name="event" value="Wildfires"> Incendios
-                </label>
-                <label>
-                    <input type="checkbox" name="event" value="SeaLakeIce"> Oceanos y lagos helados
-                </label>
-                <label>
-                    <input type="checkbox" name="event" value="Volcanoes"> Volcanes
-                </label>
-                <label>
-                    <input type="checkbox" name="event" value="SevereStorms"> Tormentas Severas
-                </label>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-
-</body>
+    
+    
+        <script src="./script.js"></script>
+    </body>
+    
 </html>

@@ -22,23 +22,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Obtener eventos de la API EONET y filtrarlos
-    async function getWildfires() {
+    async function getWildfires(fechaInicio, fechaFin) {
         try {
             const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=wildfires');
             const data = await response.json();
-
-            console.log('Respuesta completa de la API:', data);
-
+    
             if (data.events && data.events.length > 0) {
-                displayWildfires(data.events);
+                const filteredEvents = data.events.filter(event => {
+                    const eventDate = new Date(event.geometry[0].date);
+                    // Filtrar eventos si están dentro del rango de fechas seleccionadas
+                    return (!fechaInicio || eventDate >= fechaInicio) && (!fechaFin || eventDate <= fechaFin);
+                });
+                displayWildfires(filteredEvents);
             } else {
                 console.warn('No se encontraron incendios activos en la respuesta.');
             }
-
+    
         } catch (error) {
             console.error('Error fetching wildfires:', error);
         }
     }
+    
 
     async function getEarthquakes() {
         try {
@@ -112,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error fetching sea/lake ice events:', error);
         }
     }
-
 
     // Mostrar los incendios
     function displayWildfires(events) {
@@ -369,23 +372,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        document.getElementById('btnBuscar').addEventListener('click', displayFilteredEvents);
+
+        // Obtener las fechas seleccionadas
+        const fechaInicio = document.getElementById('start').value ? new Date(document.getElementById('start').value) : null;
+        const fechaFin = document.getElementById('end').value ? new Date(document.getElementById('end').value) : null;
+    
         // Obtener el valor del filtro y actualizar el mapa
         document.querySelectorAll('input[name="event"]:checked').forEach(checkbox => {
             const eventType = checkbox.value;
+    
             if (eventType === 'Wildfires') {
-                getWildfires();
+                getWildfires(fechaInicio, fechaFin);
             }
             else if (eventType === 'Earthquakes') {
-                getEarthquakes();
+                getEarthquakes(fechaInicio, fechaFin);
             }
             else if (eventType === 'Volcanoes') {
-                getVolcanoes();
+                getVolcanoes(fechaInicio, fechaFin);
             }
             else if (eventType === 'SevereStorms') {
-                getSevereStorms();
+                getSevereStorms(fechaInicio, fechaFin);
             }
             else if (eventType === 'SeaLakeIce') {
-                getSeaLakeIce();
+                getSeaLakeIce(fechaInicio, fechaFin);
             }
         });
     }
@@ -395,9 +405,9 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', displayFilteredEvents);
     });
 
-    // capas 
-
+    document.getElementById('btnBuscar').addEventListener('click', displayFilteredEvents);
     
+    // capas 
     // Definir
     let openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
