@@ -397,7 +397,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // capas 
-    // Definir 
     
     let openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
@@ -434,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Añadir el control 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
 
-    //3D\\
+    // Mapa 3D
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
@@ -468,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     animate();
 
-    // Alternar entre 2D y 3D
+    // Alternar mapa 2D y 3D
     const btn3D = document.getElementById('btn3D');
     const mapContainer = document.getElementById('map-container');
 
