@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+        <link rel="icon" type="image/x-icon" href="./img/rocket.png">
         <!-- 3D -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <!-- Leaflet JS -->
@@ -18,6 +19,7 @@
         <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>
         <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
+        
     </head>
 <body>
 
@@ -58,6 +60,17 @@
                 </label>
                 <label class="event-filter-label">
                     <input type="checkbox" name="event" value="SevereStorms"> Tormentas Severas 🌪
+                </label>
+                <label class="filter">
+                    <p>Inicio</p>
+                    <input type="date" name="start" id="start">
+                </label>
+                <label class="filter">
+                    <p>Fin</p>
+                    <input type="date" name="end" id="end">
+                </label>
+                <label class="filter-label">
+                    <input type="submit" value="Filtrar" class="btn-filter">
                 </label>
             </form>
         </div>
