@@ -490,4 +490,17 @@ document.addEventListener('DOMContentLoaded', function () {
         camera.updateProjectionMatrix();
         map.invalidateSize();
     });
+
+    // Search bar
+    let searchControl = new L.esri.Controls.Geosearch().addTo(map);
+
+    let results = new L.LayerGroup().addTo(map);
+
+      searchControl.on('results', function(data){
+        results.clearLayers();
+        for (let i = data.results.length - 1; i >= 0; i--) {
+          results.addLayer(L.marker(data.results[i].latlng));
+        }
+      });
+
 });
