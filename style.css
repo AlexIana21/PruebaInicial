@@ -67,7 +67,7 @@ header {
 }
 
 .map {
-    height: 870px;
+    height: 720px;
     z-index: 2;
     margin: 135px auto;
     box-shadow: 8px 4px 120px 4px rgba(255,255,255,0.05);
