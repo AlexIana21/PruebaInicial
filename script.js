@@ -22,6 +22,67 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    let currentMarker = null; // almacenar el marcador actual
+
+    // obtener la temperatura diaria de una fecha fija
+    async function getTemperatureForDate(lat, lon) {
+        
+        const start = '20240921';
+        const end = '20240921';
+
+        // API  con la fecha fija
+        const url = `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M&community=AG&longitude=${lon}&latitude=${lat}&start=${start}&end=${end}&format=JSON`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log('Datos obtenidos:', data);
+
+            if (data.properties && data.properties.parameter && data.properties.parameter.T2M) {
+                return data.properties.parameter.T2M;
+            } else {
+                console.warn('No se encontraron datos de temperatura para esta ubicación.');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos de temperatura:', error);
+            return null;
+        }
+    }
+
+    // Mostrar la temperatura en el mapa
+    async function displayTemperatureOnClick(lat, lon) {
+        const temperatures = await getTemperatureForDate(lat, lon);
+
+        let popupContent = '<b>Temperatura media del 21/09/2024:</b><br>';
+
+        if (temperatures) {
+            // mostrar ese valor
+            const tempValues = Object.values(temperatures);
+            const avgTemp = tempValues[0].toFixed(2);
+
+            popupContent += `<b>Temperatura media:</b> ${avgTemp} °C<br>`;
+        } else {
+            popupContent += 'Datos no disponibles para esta ubicación.';
+        }
+
+        // eliminar marcador si hay
+        if (currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+
+        // marcador nuevo 
+        currentMarker = L.marker([lat, lon]).addTo(map);
+        currentMarker.bindPopup(popupContent).openPopup();
+    }
+
+    // Evento al hacer clic en el mapa
+    map.on('click', function (e) {
+        const { lat, lng } = e.latlng;
+        displayTemperatureOnClick(lat, lng);
+    });
+
+    
     // Obtener eventos de la API EONET y filtrarlos
     async function getWildfires() {
         try {
@@ -294,13 +355,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
                     }  else {
-                        console.warn('Coordenadas inválidas para el evento:', event.title); //
+                        console.warn('Coordenadas inválidas para el evento:', event.title); 
                     }
                 }else {
-                    console.warn(`El evento ${event.title} no tiene una geometría de tipo Point con coordenadas válidas.`); //
+                    console.warn(`El evento ${event.title} no tiene una geometría de tipo Point con coordenadas válidas.`); 
                 }
             } else {
-                console.warn(`El evento ${event.title} no tiene geometrías disponibles.`); //
+                console.warn(`El evento ${event.title} no tiene geometrías disponibles.`); 
             }
         });
 
@@ -501,6 +562,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = data.results.length - 1; i >= 0; i--) {
           results.addLayer(L.marker(data.results[i].latlng));
         }
-      });
-
+    });
+   
+    
 });
