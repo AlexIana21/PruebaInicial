@@ -77,97 +77,85 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
     // Obtener eventos de la API EONET y filtrarlos
-    async function getWildfires() {
+    async function getWildfires(startDate, endDate) {
         try {
             const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=wildfires');
             const data = await response.json();
-
-            console.log('Respuesta completa de la API:', data);
-
-            if (data.events && data.events.length > 0) {
-                displayWildfires(data.events);
+            
+            const filteredEvents = data.events.filter(event => {
+                const eventDate = new Date(event.geometry[0].date);
+                return eventDate >= startDate && eventDate <= endDate;
+            });
+    
+            if (filteredEvents.length > 0) {
+                displayWildfires(filteredEvents);
             } else {
-                console.warn('No se encontraron incendios activos en la respuesta.');
+                console.warn('No wildfires found in the specified date range.');
             }
-
         } catch (error) {
             console.error('Error fetching wildfires:', error);
         }
     }
 
-    async function getEarthquakes() {
-        try {
-            const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=earthquakes');
-            const data = await response.json();
-
-            console.log('Respuesta completa de la API:', data);
-
-            if (data.events && data.events.length > 0) {
-                displayEarthquakes(data.events);
-            } else {
-                console.warn('No se encontraron terremotos activos en la respuesta.');
-            }
-
-        } catch (error) {
-            console.error('Error fetching earthquakes:', error);
-        }
-    }
-
-    async function getVolcanoes() {
+    async function getVolcanoes(startDate, endDate) {
         try {
             const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=volcanoes');
             const data = await response.json();
 
-            console.log('Respuesta completa de la API:', data);
-
-            if (data.events && data.events.length > 0) {
-                displayVolcanoes(data.events);
+            const filteredEvents = data.events.filter(event => {
+                const eventDate = new Date(event.geometry[0].date);
+                return eventDate >= startDate && eventDate <= endDate;
+            });
+    
+            if (filteredEvents.length > 0) {
+                displayVolcanoes(filteredEvents);
             } else {
-                console.warn('No se encontraron volcanes activos en la respuesta.');
+                console.warn('No volcanoes found in the specified date range.');
             }
-
         } catch (error) {
             console.error('Error fetching volcanoes:', error);
         }
     }
 
-    async function getSevereStorms() {
+    async function getSevereStorms(startDate, endDate) {
         try {
             const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=severeStorms');
             const data = await response.json();
 
-            console.log('Respuesta completa de la API:', data);
-
-            if (data.events && data.events.length > 0) {
-                displaySevereStorms(data.events);
+            const filteredEvents = data.events.filter(event => {
+                const eventDate = new Date(event.geometry[0].date);
+                return eventDate >= startDate && eventDate <= endDate;
+            });
+    
+            if (filteredEvents.length > 0) {
+                displaySevereStorms(filteredEvents);
             } else {
-                console.warn('No se encontraron tormentas severas activos en la respuesta.');
+                console.warn('No severe events found in the specified date range.');
             }
-
         } catch (error) {
-            console.error('Error fetching severe storms:', error);
+            console.error('Error fetching severe events:', error);
         }
     }
-
     
-    async function getSeaLakeIce() {
+    async function getSeaLakeIce(startDate, endDate) {
         try {
             const response = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=seaLakeIce');
             const data = await response.json();
 
-            console.log('Respuesta completa de la API:', data);
-
-            if (data.events && data.events.length > 0) {
-                displaySeaLakeIce(data.events); // Corrección aquí
+            const filteredEvents = data.events.filter(event => {
+                const eventDate = new Date(event.geometry[0].date);
+                return eventDate >= startDate && eventDate <= endDate;
+            });
+    
+            if (filteredEvents.length > 0) {
+                displaySeaLakeIce(filteredEvents);
             } else {
-                console.warn('No se encontraron eventos de hielo en lagos y mares activos en la respuesta.');
+                console.warn('No sea lakes found in the specified date range.');
             }
-
         } catch (error) {
-            console.error('Error fetching sea/lake ice events:', error);
+            console.error('Error fetching sea lakes:', error);
         }
     }
-
 
     // Mostrar los incendios
     function displayWildfires(events) {
@@ -208,47 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Refrescar el mapa
         map.invalidateSize();
     }
-
-    // Mostrar los terremotos
-    function displayEarthquakes(events) {
-        events.forEach(event => {
-        
-            console.log('Detalles del evento:', event);
-
-            // el evento tiene geometrías y al menos una coordenada
-            if (event.geometry && event.geometry.length > 0) {
-                console.log(`Evento ${event.title} tiene geometrías:`, event.geometry);
-
-                const geometry = event.geometry[0]; // primera geometría
-                const coordinates = geometry.coordinates; // Coordenadas del evento
-
-                // Verificar si (array con dos elementos)
-                if (geometry.type === 'Point' && coordinates.length === 2) {
-                    const lat = coordinates[1]; 
-                    const lng = coordinates[0]; 
-
-                    // Crear el marcador solo si las coordenadas son válidas
-                    if (lat && lng) {
-                        let marker = L.marker([lat, lng], { 
-                            icon: getEventIcon('Earthquakes')
-                        }).addTo(map);
-
-                        marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
-                    } else {
-                        console.warn('Coordenadas inválidas para el evento:', event.title);
-                    }
-                } else {
-                    console.warn(`El evento ${event.title} no tiene una geometría de tipo Point con coordenadas válidas.`);
-                }
-            } else {
-                console.warn(`El evento ${event.title} no tiene geometrías disponibles.`);
-            }
-        });
-
-        // Refrescar el mapa
-        map.invalidateSize();
-    }
-
         // Mostrar los volcanes
         function displayVolcanoes(events) {
             events.forEach(event => {
@@ -415,35 +362,68 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Filtrar eventos por el tipo seleccionado
-    function displayFilteredEvents() {
-        // Borrar todos los eventos del mapa
+    document.getElementById('event-filter').addEventListener('submit', function (e) {
+        e.preventDefault();
+        displayFilteredEvents();
+    });
+
+   
+    async function displayFilteredEvents() {
+        
         map.eachLayer((layer) => {
             if (layer instanceof L.Marker) {
                 map.removeLayer(layer);
             }
         });
 
-        // Obtener el valor del filtro y actualizar el mapa
+        // Recupera las fechas del formulario
+        const startDateInput = document.getElementById('start').value;
+        const endDateInput = document.getElementById('end').value;
+
+        let startDate = null;
+        let endDate = null;
+
+        if (startDateInput) {
+            startDate = new Date(startDateInput);
+        }
+
+        if (endDateInput) {
+            endDate = new Date(endDateInput);
+        }
+
+
+        // Selecciona los eventos del checkbox seleccionado
         document.querySelectorAll('input[name="event"]:checked').forEach(checkbox => {
             const eventType = checkbox.value;
+
             if (eventType === 'Wildfires') {
-                getWildfires();
-            }
-            else if (eventType === 'Earthquakes') {
-                getEarthquakes();
-            }
-            else if (eventType === 'Volcanoes') {
-                getVolcanoes();
-            }
-            else if (eventType === 'SevereStorms') {
-                getSevereStorms();
-            }
-            else if (eventType === 'SeaLakeIce') {
-                getSeaLakeIce();
+                if (startDate && endDate) {
+                    getWildfires(startDate, endDate);
+                } else {
+                    getWildfires(new Date('2000-01-01'), new Date());
+                }
+            } else if (eventType === 'Volcanoes') {
+                if (startDate && endDate) {
+                    getVolcanoes(startDate, endDate);
+                } else {
+                    getVolcanoes(new Date('2000-01-01'), new Date());
+                }
+            } else if (eventType === 'SevereStorms') {
+                if (startDate && endDate) {
+                    getSevereStorms(startDate, endDate);
+                } else {
+                    getSevereStorms(new Date('2000-01-01'), new Date());
+                }
+            } else if (eventType === 'SeaLakeIce') {
+                if (startDate && endDate) {
+                    getSeaLakeIce(startDate, endDate);
+                } else {
+                    getSeaLakeIce(new Date('2000-01-01'), new Date());
+                }
             }
         });
     }
+    
 
     // cambio en los checkboxes
     document.querySelectorAll('input[name="event"]').forEach(checkbox => {
