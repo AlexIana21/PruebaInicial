@@ -24,22 +24,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentMarker = null; // almacenar el marcador actual
 
-    // obtener la temperatura diaria de una fecha fija
+    // obtener la temperatura
     async function getTemperatureForDate(lat, lon) {
-        
-        const start = '20240921';
-        const end = '20240921';
-
-        // API  con la fecha fija
-        const url = `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M&community=AG&longitude=${lon}&latitude=${lat}&start=${start}&end=${end}&format=JSON`;
-
+        // API de WeatherAPI
+        const url = `http://api.weatherapi.com/v1/current.json?key=7efd92e5d70c4aa9b6e140648242509&q=${lat},${lon}`;
+    
         try {
             const response = await fetch(url);
             const data = await response.json();
             console.log('Datos obtenidos:', data);
-
-            if (data.properties && data.properties.parameter && data.properties.parameter.T2M) {
-                return data.properties.parameter.T2M;
+    
+            // Verificar si hay datos 
+            if (data && data.current && typeof data.current.temp_c !== 'undefined') {
+                return data.current.temp_c;
             } else {
                 console.warn('No se encontraron datos de temperatura para esta ubicación.');
                 return null;
@@ -49,39 +46,35 @@ document.addEventListener('DOMContentLoaded', function () {
             return null;
         }
     }
-
-    // Mostrar la temperatura en el mapa
+    
+    // Mostrar temp mapa
     async function displayTemperatureOnClick(lat, lon) {
-        const temperatures = await getTemperatureForDate(lat, lon);
-
-        let popupContent = '<b>Temperatura media del 21/09/2024:</b><br>';
-
-        if (temperatures) {
-            // mostrar ese valor
-            const tempValues = Object.values(temperatures);
-            const avgTemp = tempValues[0].toFixed(2);
-
-            popupContent += `<b>Temperatura media:</b> ${avgTemp} °C<br>`;
+        const temperature = await getTemperatureForDate(lat, lon);
+    
+        let popupContent = '';
+    
+        if (temperature !== null) {
+            
+            popupContent += `<b>Temperatura Actual:</b> ${temperature.toFixed(2)} °C<br>`;
         } else {
             popupContent += 'Datos no disponibles para esta ubicación.';
         }
-
-        // eliminar marcador si hay
+    
+        // Eliminar marca antigua
         if (currentMarker) {
             map.removeLayer(currentMarker);
         }
-
-        // marcador nuevo 
+    
+        // nuevo marcador con popup
         currentMarker = L.marker([lat, lon]).addTo(map);
         currentMarker.bindPopup(popupContent).openPopup();
     }
-
+    
     // Evento al hacer clic en el mapa
     map.on('click', function (e) {
         const { lat, lng } = e.latlng;
         displayTemperatureOnClick(lat, lng);
     });
-
     
     // Obtener eventos de la API EONET y filtrarlos
     async function getWildfires() {
