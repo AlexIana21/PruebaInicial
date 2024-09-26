@@ -510,12 +510,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (mapContainer.style.display === 'none') {
             mapContainer.style.display = 'block';
             globeContainer.style.display = 'none';
-            btn3D.textContent = 'Cambiar a 3D';
+            btn3D.textContent = '3D MAP';
             map.invalidateSize();
         } else {
             mapContainer.style.display = 'none';
             globeContainer.style.display = 'block';
-            btn3D.textContent = 'Cambiar a 2D';
+            btn3D.textContent = '2D MAP';
         }
     });
 
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
     var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
 
-    var eventos = ['volcanoes', 'wildfires','storms','icebergs'];
+    var eventos = ['volcanoes', 'wildfires','severe storms','icebergs'];
 
     var grammar = '#JSGF V1.0; grammar eventos; public <evento> = ' + eventos.join(' | ') + ' ;';
 
@@ -554,7 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
     speechRecognitionList.addFromString(grammar, 1);
     recognition.grammars = speechRecognitionList;
     recognition.continuous = false; // si lo pongo true reconoce la voz todo el rato 
-    recognition.lang = "en-ES";
+    recognition.lang = "en-EN";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
@@ -578,7 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (evento.includes('wildfires')) {
             console.log('Mostrando eventos de incendios');
             getWildfires(new Date('2000-01-01'), new Date());
-        } else if (evento.includes('storms')) {
+        } else if (evento.includes('sever storms')) {
             console.log('Mostrando eventos de tormentas severas');
             getSevereStorms(new Date('2000-01-01'), new Date());
         } else if (evento.includes('icebergs')) {
