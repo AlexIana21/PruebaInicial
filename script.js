@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
         if (result !== null) {
             const { temperature, locationName } = result;
-            popupContent += `<b>Ubicación:</b> ${locationName}<br>`;
-            popupContent += `<b>Temperatura Actual:</b> ${temperature} °C<br>`;
+            popupContent += `<b>Location:</b> ${locationName}<br>`;
+            popupContent += `<b>Temperature:</b> ${temperature} °C<br>`;
         } else {
             popupContent += 'Datos no disponibles para esta ubicación.';
         }
