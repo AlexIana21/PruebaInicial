@@ -32,9 +32,7 @@
 
                 <p class="sub-header"> Extreme Weather Events Observatory </p>
             </div>
-            <div class="btnVoz">
-                <button id="voiceButton">Activar voz</button>
-            </div>
+            
 
         </header>
 
@@ -52,35 +50,41 @@
         </div>
 
         <div id="controls" class="controls">
-            <h2>Eventos</h2>
+            <h2>Events</h2>
             <form id="event-filter" class="event-filter">
                 <label class="event-filter-label">
-                    <input type="checkbox" name="event" value="Wildfires"> Incendios 🔥
+                    <input type="checkbox" name="event" value="Wildfires"> Wildfires 🔥
                 </label>
                 <label class="event-filter-label">
-                    <input type="checkbox" name="event" value="SeaLakeIce"> Oceanos y lagos helados ❄
+                    <input type="checkbox" name="event" value="SeaLakeIce"> Icebergs ❄
                 </label>
                 <label class="event-filter-label">
-                    <input type="checkbox" name="event" value="Volcanoes"> Volcanes 🌋
+                    <input type="checkbox" name="event" value="Volcanoes"> Volcanoes 🌋
                 </label>
                 <label class="event-filter-label">
-                    <input type="checkbox" name="event" value="SevereStorms"> Tormentas Severas 🌪
+                    <input type="checkbox" name="event" value="SevereStorms"> Severe Storms 🌪
                 </label>
                 <label class="filter">
-                    <p>Inicio</p>
+                    <p>Start date</p>
                     <input type="date" name="start" id="start">
                 </label>
                 <label class="filter">
-                    <p>Fin</p>
+                    <p>End date</p>
                     <input type="date" name="end" id="end">
                 </label>
                 <label class="filter-label">
-                    <input type="submit" value="Filtrar" class="btn-filter">
+                    <input type="submit" value="Filter" class="btn-filter">
                 </label>
+                
+                <hr>
+                <div class="btnVoz">
+                    <button id="voiceButton">Activate speech</button>
+                </div>
+
             </form>
         </div>
 
-        <button id="btn3D" class="btn-3d">Cambiar a 3D</button>
+        <button id="btn3D" class="btn-3d">3D MAP</button>
     </div>
 
     <script src="script.js"></script>
