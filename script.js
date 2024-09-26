@@ -28,34 +28,35 @@ document.addEventListener('DOMContentLoaded', function () {
     async function getTemperatureForDate(lat, lon) {
         // API de WeatherAPI
         const url = `http://api.weatherapi.com/v1/current.json?key=7efd92e5d70c4aa9b6e140648242509&q=${lat},${lon}`;
-    
+        
         try {
             const response = await fetch(url);
             const data = await response.json();
             console.log('Datos obtenidos:', data);
     
             // Verificar si hay datos 
-            if (data && data.current && typeof data.current.temp_c !== 'undefined') {
-                return data.current.temp_c;
+            if (data && data.current && typeof data.current.temp_c !== 'undefined' && data.location && typeof data.location.name !== 'undefined') {
+                return { temperature: data.current.temp_c, locationName: data.location.name };
             } else {
-                console.warn('No se encontraron datos de temperatura para esta ubicación.');
+                console.warn('No se encontraron datos para esta ubicación.');
                 return null;
             }
         } catch (error) {
-            console.error('Error al obtener los datos de temperatura:', error);
+            console.error('Error al obtener los datos:', error);
             return null;
         }
     }
     
     // Mostrar temp mapa
     async function displayTemperatureOnClick(lat, lon) {
-        const temperature = await getTemperatureForDate(lat, lon);
+        const result = await getTemperatureForDate(lat, lon);
     
         let popupContent = '';
     
-        if (temperature !== null) {
-            
-            popupContent += `<b>Temperatura Actual:</b> ${temperature.toFixed(2)} °C<br>`;
+        if (result !== null) {
+            const { temperature, locationName } = result;
+            popupContent += `<b>Ubicación:</b> ${locationName}<br>`;
+            popupContent += `<b>Temperatura Actual:</b> ${temperature} °C<br>`;
         } else {
             popupContent += 'Datos no disponibles para esta ubicación.';
         }
@@ -65,16 +66,16 @@ document.addEventListener('DOMContentLoaded', function () {
             map.removeLayer(currentMarker);
         }
     
-        // nuevo marcador con popup
+        // Nuevo marcador con popup
         currentMarker = L.marker([lat, lon]).addTo(map);
         currentMarker.bindPopup(popupContent).openPopup();
     }
-    
     // Evento al hacer clic en el mapa
     map.on('click', function (e) {
-        const { lat, lng } = e.latlng;
-        displayTemperatureOnClick(lat, lng);
-    });
+        const { lat, lng} = e.latlng;
+
+        displayTemperatureOnClick(lat, lng );
+    })
     
     // Obtener eventos de la API EONET y filtrarlos
     async function getWildfires(startDate, endDate) {
