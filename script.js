@@ -536,6 +536,64 @@ document.addEventListener('DOMContentLoaded', function () {
           results.addLayer(L.marker(data.results[i].latlng));
         }
     });
-   
+    
+     // voz
+    // configurando el comando de voz
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+    var eventos = ['volcanoes', 'wildfires','storms','icebergs'];
+
+    var grammar = '#JSGF V1.0; grammar eventos; public <evento> = ' + eventos.join(' | ') + ' ;';
+
+    var recognition = new SpeechRecognition();
+    var speechRecognitionList = new SpeechGrammarList();
+
+    speechRecognitionList.addFromString(grammar, 1);
+    recognition.grammars = speechRecognitionList;
+    recognition.continuous = false; // si lo pongo true reconoce la voz todo el rato 
+    recognition.lang = "en-ES";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    //hacer la function onclick para pulsar en el btn y que se active el reconocimiento solo. 
+    const voiceButton = document.getElementById('voiceButton')
+
+    voiceButton.addEventListener('click', () => {
+        recognition.start();
+        console.log('Voice recognition started');
+    });
+
+    // manejo resultados
+    recognition.onresult = function (event) {
+        var evento = event.results[0][0].transcript.toLowerCase();
+        console.log("Resultado recibido: " + evento + ".");
+    
+        // llamar a la funcion 
+        if (evento.includes('volcanoes')) {
+            console.log('Mostrando eventos de volcanes');
+            getVolcanoes(new Date('2000-01-01'), new Date());
+        } else if (evento.includes('wildfires')) {
+            console.log('Mostrando eventos de incendios');
+            getWildfires(new Date('2000-01-01'), new Date());
+        } else if (evento.includes('storms')) {
+            console.log('Mostrando eventos de tormentas severas');
+            getSevereStorms(new Date('2000-01-01'), new Date());
+        } else if (evento.includes('icebergs')) {
+            console.log('Mostrando eventos de icebergs');
+            getSeaLakeIce(new Date('2000-01-01'), new Date());
+        } else {
+            console.log('No se reconoció el evento.');
+        }
+    };
+
+  //errores en la voz
+
+    recognition.onerror = function (evento) {
+    diagnostic.textContent = "Error en crear el evento: " + evento.error;
+    };
+
+
     
 });
