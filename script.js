@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             icon: getEventIcon('Wildfires')
                         }).addTo(map);
 
-                        marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                        marker.bindPopup(`<b>${event.title}</b><br>Date: ${new Date(geometry.date).toLocaleString()}`);
                     } else {
                         console.warn('Coordenadas inválidas para el evento:', event.title);
                     }
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 icon: getEventIcon('Volcanoes')
                             }).addTo(map);
     
-                            marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                            marker.bindPopup(`<b>${event.title}</b><br>Date: ${new Date(geometry.date).toLocaleString()}`);
                         } else {
                             console.warn('Coordenadas inválidas para el evento:', event.title);
                         }
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 icon: getEventIcon('SevereStorms')
                             }).addTo(map);
     
-                            marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                            marker.bindPopup(`<b>${event.title}</b><br>Date: ${new Date(geometry.date).toLocaleString()}`);
                         } else {
                             console.warn('Coordenadas inválidas para el evento:', event.title);
                         }
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             icon: getEventIcon('SeaLakeIce')
                         }).addTo(map);
 
-                        marker.bindPopup(`<b>${event.title}</b><br>Fecha: ${new Date(geometry.date).toLocaleString()}`);
+                        marker.bindPopup(`<b>${event.title}</b><br>Date: ${new Date(geometry.date).toLocaleString()}`);
                     }  else {
                         console.warn('Coordenadas inválidas para el evento:', event.title); 
                     }
@@ -578,7 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (evento.includes('wildfires')) {
             console.log('Mostrando eventos de incendios');
             getWildfires(new Date('2000-01-01'), new Date());
-        } else if (evento.includes('sever storms')) {
+        } else if (evento.includes('severe storms')) {
             console.log('Mostrando eventos de tormentas severas');
             getSevereStorms(new Date('2000-01-01'), new Date());
         } else if (evento.includes('icebergs')) {

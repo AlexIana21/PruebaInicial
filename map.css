@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+}
+
+.separation {
+    display: flex;
+    flex-direction: row;
+    height: 0.5px;
+    background-color: black;
+    width: 75%;
+    opacity: 0.3;
+}
+
+button {
+    font-family: "Montserrat", sans-serif;
+}
+
+.headerLogo {
+    display: flex;
+    z-index: 10;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+    margin-left: 45px;
+}
+
+.navegation {
+    position: absolute;
+    right: 200px;
+    gap: 35px;
+    display: flex;
+    margin-right: 35px;
+}
+
+.navegation a {
+    text-decoration: none;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    
+    display: inline-block;
+    padding: 10px;
+    position: relative;
+    color: white;
+}
+
+.navegation a:after {    
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 1.5px;
+    left: 50%;
+    position: absolute;
+    background: #ff2e2e;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+.navegation a:hover:after { 
+    width: 100%; 
+    left: 0; 
+}
+
+.sub-header {
+    text-align: center;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.btnVoz {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.btnVoz button {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    z-index: 20;
+    padding: 9px 18px;
+    background-color: #007bff;
+    color: white;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.btnVoz button:hover {
+    color: black;
+    transition: 0.1s ease-in-out;
+}
+
+/* mapas */
+
+.map-container, .globe-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.map {
+    height: 720px;
+    z-index: 2;
+    margin: 110px auto;
+    box-shadow: 8px 4px 120px 4px rgba(255,255,255,0.05);
+}
+
+.globe-container {
+    display: none; 
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 20px !important;
+}
+
+.btn-3d {
+    position: absolute;
+    top: 33px;
+    right: 18px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 9999; 
+    font-weight: 700;
+}
+
+/* menú hamburguesa */
+
+.menu-icon {
+    position: absolute;
+    top: 26px;
+    right: 130px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 5px;
+    color: white;
+    padding: 5px 12px;
+}
+
+.menu-icon:hover {
+    color: #ff2e2e;
+    transition: 0.2s ease-in-out;
+    background-color: rgba(213, 213, 213, 0.2);
+}
+
+.controls {
+    position: absolute;
+    top: 130px;
+    right: 130px;
+    width: 245px;
+    background-color: #f4f4f4;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+    z-index: 999;
+}
+
+.controls.visible {
+    transform: scaleY(1);
+}
+
+.controls h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.controls h3 {
+    margin-bottom: 8px;
+}
+
+.event-filter {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-filter-label {
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.event-filter-label input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.event-filter-label:hover {
+    background-color: #e1e1e1;
+    border-radius: 5px;
+}
+
+.filter {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.filter p {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.filter-label {
+    text-align: center;
+}
+
+.btn-filter {
+    border: none;
+    background-color: #007bff;
+    border-radius: 5px;
+    z-index: 20;
+    padding: 7px 18px;
+    margin-top: 15px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: white;
+    font-size: 13px;
+}
+
+.btn-filter:hover {
+    color: black;
+    transition: 0.2s ease-in-out;
+}
+
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    align-items: center;
+    margin-bottom: 40px;
+    position: absolute;
+    bottom: 0;
+    align-content: center;
+    width: 95%;
+}
+
+.enlaces a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+
+}
+
+.enlaces {
+    display: flex;
+    flex-direction: row;
+    gap: 55px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.nasaLogo {
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.nasaNombre {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.nasaNombre p {
+    width: 220px;
+    font-weight: 700;
+    color: white;
+}
+
+.redes {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+}
+
+.redes a:hover {
+    scale: 1.2;
+    transition: 0.1s ease-in-out;
+}
+
+.enlaces a:hover {
+    color: #ff2e2e;
+    scale: 1.05;
+    transition: 0.2s ease-in-out;
+}
+
+.hrFooter {
+    height: 0.5px;
+    background-color: white;
+    width: 75%;
+    opacity: 0.3;
+}
