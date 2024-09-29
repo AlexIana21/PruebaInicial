@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'Wildfires':
             
                 return L.icon({
-                    iconUrl: './img/fuego.png', 
+                    iconUrl: '../img/fuego.png', 
                     iconSize: [25, 25], 
                     iconAnchor: [22, 38], 
                     popupAnchor: [-3, -38] 
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'Earthquakes':
 
                 return L.icon({
-                    iconUrl: './img/terremoto.png', 
+                    iconUrl: '../img/terremoto.png', 
                     iconSize: [20, 20], 
                     iconAnchor: [22, 38], 
                     popupAnchor: [-3, -38] 
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             case 'Volcanoes':
                 return L.icon({
-                    iconUrl: './img/volcan.png', 
+                    iconUrl: '../img/volcan.png', 
                     iconSize: [30, 30], 
                     iconAnchor: [22, 38], 
                     popupAnchor: [-3, -38] 
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             case 'SevereStorms':
             return L.icon({
-                iconUrl: './img/severestorms.png', 
+                iconUrl: '../img/severestorms.png', 
                 iconSize: [30, 30], 
                 iconAnchor: [22, 38], 
                 popupAnchor: [-3, -38] 
@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             case 'SeaLakeIce': 
             return L.icon({
-                iconUrl: './img/seaLakeIce.png', 
+                iconUrl: '../img/seaLakeIce.png', 
                 iconSize: [22, 22], 
                 iconAnchor: [22, 38], 
                 popupAnchor: [-3, -38] 
@@ -467,64 +467,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Añadir el control 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-    // Mapa 3D
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const globeContainer = document.getElementById('globe-container');
-    if (globeContainer) {
-        globeContainer.appendChild(renderer.domElement);
-    } else {
-        console.error('El contenedor 3D "globe-container" no existe en el DOM.');
-    }
-
-    const radius = 5;
-    const segments = 50;
-    const globeGeometry = new THREE.SphereGeometry(radius, segments, segments);
-
-    const globeMaterial = new THREE.MeshBasicMaterial({
-        map: new THREE.TextureLoader().load('https://a.tile.openstreetmap.org/0/0/0.png')
-    });
-
-    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
-    scene.add(globe);
-
-    camera.position.z = 15;
-
-    function animate() {
-        requestAnimationFrame(animate);
-        globe.rotation.y += 0.001;
-        renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // Alternar mapa 2D y 3D
-    const btn3D = document.getElementById('btn3D');
-    const mapContainer = document.getElementById('map-container');
-
-    btn3D.addEventListener('click', () => {
-        if (mapContainer.style.display === 'none') {
-            mapContainer.style.display = 'block';
-            globeContainer.style.display = 'none';
-            btn3D.textContent = '3D MAP';
-            map.invalidateSize();
-        } else {
-            mapContainer.style.display = 'none';
-            globeContainer.style.display = 'block';
-            btn3D.textContent = '2D MAP';
-        }
-    });
-
-    window.addEventListener('resize', () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        map.invalidateSize();
-    });
 
     // Search bar
     let searchControl = new L.esri.Controls.Geosearch().addTo(map);
